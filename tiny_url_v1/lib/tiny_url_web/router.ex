@@ -17,7 +17,9 @@ defmodule TinyUrlWeb.Router do
   scope "/", TinyUrlWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", LinkController, :new
+    get "/:short_code", LinkController, :show
+    post "/shorten", LinkController, :create
   end
 
   # Other scopes may use custom stacks.
