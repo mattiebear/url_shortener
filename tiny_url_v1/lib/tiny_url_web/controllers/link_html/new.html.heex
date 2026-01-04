@@ -41,34 +41,79 @@
         </p>
       </div>
 
-      <%!-- URL Shortener Form --%>
+      <%!-- URL Shortener Form / Success Display --%>
       <div class="max-w-2xl mx-auto">
-        <.form :let={f} for={@changeset} action={~p"/shorten"} class="space-y-3">
-          <%!-- Input group --%>
-          <div class="flex flex-col sm:flex-row gap-3 p-2 rounded-2xl bg-base-200/50 backdrop-blur-sm shadow-xl transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20">
-            <div class="flex-1">
-              <.input
-                field={f[:original_url]}
-                placeholder="https://your-super-long-url-goes-here.com/..."
-                required
-                class="input input-lg input-bordered w-full bg-base-100 border-2 border-base-300 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-200"
-              />
+        <%= if @link do %>
+          <%!-- Success state - show the shortened link --%>
+          <div class="space-y-6">
+            <%!-- Success message --%>
+            <div class="flex items-center justify-center gap-2 text-green-600">
+              <.icon name="hero-check-circle" class="w-6 h-6" />
+              <span class="font-semibold">Your link is ready!</span>
             </div>
-            <.button
-              type="submit"
-              class="btn btn-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 sm:min-w-[160px]"
-            >
-              <.icon name="hero-scissors" class="w-5 h-5" />
-              <span class="font-semibold">Shrink It!</span>
-            </.button>
-          </div>
 
-          <%!-- Helper text --%>
-          <p class="text-sm text-base-content/60 flex items-center justify-center gap-2">
-            <.icon name="hero-lock-closed" class="w-4 h-4" />
-            Free forever • No signup required • Privacy-friendly
-          </p>
-        </.form>
+            <%!-- Shortened link display --%>
+            <div class="p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm border-2 border-purple-300 shadow-xl">
+              <div class="space-y-4">
+                <div>
+                  <label class="text-sm font-medium text-base-content/70">Your tiny URL:</label>
+                  <a
+                    href={~p"/#{@link.short_code}"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-2 block text-2xl md:text-3xl font-bold text-purple-600 hover:text-pink-600 transition-colors break-all"
+                  >
+                    {url(~p"/#{@link.short_code}")}
+                  </a>
+                </div>
+
+                <div class="pt-4 border-t border-base-300">
+                  <label class="text-sm font-medium text-base-content/70">Original URL:</label>
+                  <p class="mt-1 text-sm text-base-content/60 break-all">{@link.original_url}</p>
+                </div>
+              </div>
+            </div>
+
+            <%!-- Create another button --%>
+            <div class="flex justify-center">
+              <.link
+                href={~p"/"}
+                class="btn btn-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+              >
+                <.icon name="hero-plus" class="w-5 h-5" />
+                <span class="font-semibold">Create Another</span>
+              </.link>
+            </div>
+          </div>
+        <% else %>
+          <%!-- Form state - show the input form --%>
+          <.form :let={f} for={@changeset} action={~p"/shorten"} class="space-y-3">
+            <%!-- Input group --%>
+            <div class="flex flex-col sm:flex-row gap-3 p-2 rounded-2xl bg-base-200/50 backdrop-blur-sm shadow-xl transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20">
+              <div class="flex-1">
+                <.input
+                  field={f[:original_url]}
+                  placeholder="https://your-super-long-url-goes-here.com/..."
+                  required
+                  class="input input-lg input-bordered w-full bg-base-100 border-2 border-base-300 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-200"
+                />
+              </div>
+              <.button
+                type="submit"
+                class="btn btn-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 sm:min-w-[160px]"
+              >
+                <.icon name="hero-scissors" class="w-5 h-5" />
+                <span class="font-semibold">Shrink It!</span>
+              </.button>
+            </div>
+
+            <%!-- Helper text --%>
+            <p class="text-sm text-base-content/60 flex items-center justify-center gap-2">
+              <.icon name="hero-lock-closed" class="w-4 h-4" />
+              Free forever • No signup required • Privacy-friendly
+            </p>
+          </.form>
+        <% end %>
       </div>
 
       <%!-- Feature callouts --%>

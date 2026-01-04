@@ -2,6 +2,10 @@ defmodule TinyUrl.Links do
   alias TinyUrl.Links.Link
   alias TinyUrl.Repo
 
+  def get_link(id) do
+    Repo.get(Link, id)
+  end
+
   def change_link(%Link{} = link, attrs \\ %{}) when is_map(attrs) do
     Link.changeset(link, attrs)
   end
