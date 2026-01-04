@@ -3,7 +3,7 @@ defmodule TinyUrl.Repo.Migrations.CreateLinks do
 
   def change do
     create table(:links) do
-      add :original_url, :string, null: false
+      add :original_url, :text, null: false
       add :short_code, :string, null: false
 
       timestamps(type: :utc_datetime)

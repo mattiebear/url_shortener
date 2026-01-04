@@ -12,7 +12,7 @@ defmodule TinyUrl.Links.Link do
   @doc false
   def changeset(link, attrs) do
     link
-    |> cast(attrs, [:short_code, :original_url])
-    |> validate_required([:short_code, :original_url])
+    |> cast(attrs, [:original_url])
+    |> validate_required([:original_url])
   end
 end
