@@ -17,7 +17,7 @@ config :tiny_url, TinyUrl.Repo,
 # you can enable the server option below.
 config :tiny_url, TinyUrlWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "H+0B7ymWCpuQ7gOhWX5hyBDwh4RwM/b7XqdzNR2kHSvYhkvqc0dAq38dPuYhQwc5",
+  secret_key_base: "btiZuOi8EKkDZT6HgEC8Tiju1Q/3ueOEoDKExDkO/DlZWQ0De26Pl3OytS53FmWv",
   server: false
 
 # Print only warnings and errors during test

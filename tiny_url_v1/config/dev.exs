@@ -23,7 +23,7 @@ config :tiny_url, TinyUrlWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "a16aY4NQjGb55CFP37ZnhvjE/UYzVVuhsuCSSTQKEERh+YyuoKHrx+IAsV8F3bKv",
+  secret_key_base: "mUr0cLgs9XYqip98JlS/Czqp91TUB5vMYF18UEUxPdlZCHr5pTYxc9/L8+r2oZ+v",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:tiny_url, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:tiny_url, ~w(--watch)]}

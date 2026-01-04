@@ -7,7 +7,7 @@ defmodule TinyUrlWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_tiny_url_key",
-    signing_salt: "z8cJQlUa",
+    signing_salt: "xkAdInHe",
     same_site: "Lax"
   ]
 

@@ -20,7 +20,7 @@ config :tiny_url, TinyUrlWeb.Endpoint,
     layout: false
   ],
   pubsub_server: TinyUrl.PubSub,
-  live_view: [signing_salt: "EbCp7U0K"]
+  live_view: [signing_salt: "87qHZSwR"]
 
 # Configure esbuild (the version is required)
 config :esbuild,
