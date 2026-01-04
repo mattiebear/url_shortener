@@ -22,11 +22,6 @@ defmodule TinyUrlWeb.Router do
     post "/shorten", LinkController, :create
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", TinyUrlWeb do
-  #   pipe_through :api
-  # end
-
   # Enable LiveDashboard in development
   if Application.compile_env(:tiny_url, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put

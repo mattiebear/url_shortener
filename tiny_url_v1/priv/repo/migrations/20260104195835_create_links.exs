@@ -8,5 +8,7 @@ defmodule TinyUrl.Repo.Migrations.CreateLinks do
 
       timestamps(type: :utc_datetime)
     end
+
+    create unique_index(:links, [:short_code])
   end
 end

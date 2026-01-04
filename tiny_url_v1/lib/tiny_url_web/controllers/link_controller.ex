@@ -1,8 +1,12 @@
 defmodule TinyUrlWeb.LinkController do
   use TinyUrlWeb, :controller
 
+  alias TinyUrl.Links
+  alias TinyUrl.Links.Link
+
   def new(conn, _params) do
-    render(conn, "new.html")
+    changeset = Links.change_link(%Link{})
+    render(conn, "new.html", changeset: changeset)
   end
 
   def show(conn, _params) do
