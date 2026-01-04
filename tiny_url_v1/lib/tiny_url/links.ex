@@ -6,6 +6,10 @@ defmodule TinyUrl.Links do
     Repo.get(Link, id)
   end
 
+  def get_link_by_short_code(short_code) do
+    Repo.get_by(Link, short_code: short_code)
+  end
+
   def change_link(%Link{} = link, attrs \\ %{}) when is_map(attrs) do
     Link.changeset(link, attrs)
   end

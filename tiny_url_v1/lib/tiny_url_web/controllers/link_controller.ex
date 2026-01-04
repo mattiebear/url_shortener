@@ -9,8 +9,14 @@ defmodule TinyUrlWeb.LinkController do
     render(conn, :new, changeset: changeset, link: nil)
   end
 
-  def show(conn, _params) do
-    redirect(conn, to: ~p"/")
+  def show(conn, %{"short_code" => short_code}) do
+    case Links.get_link_by_short_code(short_code) do
+      nil ->
+        render(conn, :not_found)
+
+      link ->
+        redirect(conn, external: link.original_url)
+    end
   end
 
   def create(conn, %{"link" => link_params}) do
