@@ -61,4 +61,46 @@ defmodule TinyUrlWeb.LinkController do
         render(conn, :new, changeset: changeset, link: nil)
     end
   end
+
+  def create_api(conn, %{"original_url" => original_url}) do
+    Logger.metadata(original_url: String.slice(original_url, 0, 200))
+    Logger.info("API link creation request")
+
+    start_time = System.monotonic_time()
+
+    case Links.create_link(%{"original_url" => original_url}) do
+      {:ok, link} ->
+        duration = System.monotonic_time() - start_time
+        :telemetry.execute([:tiny_url, :links, :create], %{duration: duration, count: 1})
+
+        Logger.metadata(short_code: link.short_code)
+        Logger.info("Link created successfully via API")
+
+        conn
+        |> put_status(:created)
+        |> render(:create, link: link)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        errors = Ecto.Changeset.traverse_errors(changeset, fn {msg, _opts} -> msg end)
+        Logger.metadata(validation_errors: errors)
+        Logger.warning("API link creation failed")
+
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(:error, changeset: changeset)
+    end
+  end
+
+  def create_api(conn, _params) do
+    Logger.warning("API link creation request missing original_url")
+
+    changeset =
+      %Link{}
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.add_error(:original_url, "can't be blank")
+
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(:error, changeset: changeset)
+  end
 end
