@@ -14,27 +14,28 @@ defmodule TinyUrlWeb.Telemetry do
       # {:telemetry_poller, measurements: periodic_measurements(), period: 10_000},
       # Add reporters as children of your supervision tree.
       # TelemetryMetricsPrometheus (not Core) includes HTTP server
-      {TelemetryMetricsPrometheus, metrics: history_metrics(), port: 9568}
+      {TelemetryMetricsPrometheus, metrics: metrics(), port: 9568}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 
-  def history_metrics do
+  def metrics do
     [
-      last_value("tiny_url.links.create.duration", description: "Time to create a shortened link"),
-      last_value("tiny_url.links.redirect.duration", description: "Time to lookup and redirect a link"),
+      last_value("tiny_url.links.create.duration",
+        unit: {:native, :millisecond},
+        description: "Time to create a shortened link"
+      ),
+      last_value("tiny_url.links.redirect.duration",
+        unit: {:native, :millisecond},
+        description: "Time to lookup and redirect a link"
+      ),
       counter("tiny_url.links.create.count",
         description: "Total number of links created"
       ),
       counter("tiny_url.links.redirect.count",
         description: "Total number of successful redirects"
       ),
-    ]
-  end
-
-  def metrics do
-    [
       summary("phoenix.endpoint.start.system_time",
         unit: {:native, :millisecond}
       ),
