@@ -13,7 +13,8 @@ defmodule TinyUrlWeb.Telemetry do
       # every 10_000ms. Learn more here: https://hexdocs.pm/telemetry_metrics
       {:telemetry_poller, measurements: periodic_measurements(), period: 10_000},
       # Add reporters as children of your supervision tree.
-      {TelemetryMetricsPrometheus.Core, metrics: metrics(), port: 9568}
+      # TelemetryMetricsPrometheus (not Core) includes HTTP server
+      {TelemetryMetricsPrometheus, metrics: metrics(), port: 9568}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
@@ -22,83 +23,85 @@ defmodule TinyUrlWeb.Telemetry do
   def metrics do
     [
       # URL Shortener Specific Metrics
-      summary("tiny_url.links.create.duration",
+      # Using last_value for duration tracking (Prometheus will show latest value)
+      last_value("tiny_url.links.create.duration",
         unit: {:native, :millisecond},
         description: "Time to create a shortened link"
       ),
-      summary("tiny_url.links.redirect.duration",
+      last_value("tiny_url.links.redirect.duration",
         unit: {:native, :millisecond},
         description: "Time to lookup and redirect a link"
       ),
-      counter("tiny_url.links.create.count",
+      # Using sum for counters (Prometheus will accumulate values)
+      sum("tiny_url.links.create.count",
         description: "Total number of links created"
       ),
-      counter("tiny_url.links.redirect.count",
+      sum("tiny_url.links.redirect.count",
         description: "Total number of successful redirects"
       ),
-      counter("tiny_url.links.not_found.count",
+      sum("tiny_url.links.not_found.count",
         description: "Total number of 404s for invalid short codes"
       ),
 
       # Phoenix Metrics
-      summary("phoenix.endpoint.start.system_time",
+      last_value("phoenix.endpoint.start.system_time",
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.endpoint.stop.duration",
+      last_value("phoenix.endpoint.stop.duration",
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.router_dispatch.start.system_time",
+      last_value("phoenix.router_dispatch.start.system_time",
         tags: [:route],
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.router_dispatch.exception.duration",
+      last_value("phoenix.router_dispatch.exception.duration",
         tags: [:route],
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.router_dispatch.stop.duration",
+      last_value("phoenix.router_dispatch.stop.duration",
         tags: [:route],
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.socket_connected.duration",
+      last_value("phoenix.socket_connected.duration",
         unit: {:native, :millisecond}
       ),
       sum("phoenix.socket_drain.count"),
-      summary("phoenix.channel_joined.duration",
+      last_value("phoenix.channel_joined.duration",
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.channel_handled_in.duration",
+      last_value("phoenix.channel_handled_in.duration",
         tags: [:event],
         unit: {:native, :millisecond}
       ),
 
       # Database Metrics
-      summary("tiny_url.repo.query.total_time",
+      last_value("tiny_url.repo.query.total_time",
         unit: {:native, :millisecond},
         description: "The sum of the other measurements"
       ),
-      summary("tiny_url.repo.query.decode_time",
+      last_value("tiny_url.repo.query.decode_time",
         unit: {:native, :millisecond},
         description: "The time spent decoding the data received from the database"
       ),
-      summary("tiny_url.repo.query.query_time",
+      last_value("tiny_url.repo.query.query_time",
         unit: {:native, :millisecond},
         description: "The time spent executing the query"
       ),
-      summary("tiny_url.repo.query.queue_time",
+      last_value("tiny_url.repo.query.queue_time",
         unit: {:native, :millisecond},
         description: "The time spent waiting for a database connection"
       ),
-      summary("tiny_url.repo.query.idle_time",
+      last_value("tiny_url.repo.query.idle_time",
         unit: {:native, :millisecond},
         description:
           "The time the connection spent waiting before being checked out for the query"
       ),
 
       # VM Metrics
-      summary("vm.memory.total", unit: {:byte, :kilobyte}),
-      summary("vm.total_run_queue_lengths.total"),
-      summary("vm.total_run_queue_lengths.cpu"),
-      summary("vm.total_run_queue_lengths.io")
+      last_value("vm.memory.total", unit: {:byte, :kilobyte}),
+      last_value("vm.total_run_queue_lengths.total"),
+      last_value("vm.total_run_queue_lengths.cpu"),
+      last_value("vm.total_run_queue_lengths.io")
     ]
   end
 

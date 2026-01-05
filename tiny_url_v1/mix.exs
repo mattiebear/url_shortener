@@ -60,7 +60,7 @@ defmodule TinyUrl.MixProject do
        depth: 1},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:telemetry_metrics_prometheus_core, "~> 1.2"},
+      {:telemetry_metrics_prometheus, "~> 1.1"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"}
