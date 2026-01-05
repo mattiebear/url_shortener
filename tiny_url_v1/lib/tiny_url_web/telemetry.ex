@@ -11,9 +11,9 @@ defmodule TinyUrlWeb.Telemetry do
     children = [
       # Telemetry poller will execute the given period measurements
       # every 10_000ms. Learn more here: https://hexdocs.pm/telemetry_metrics
-      {:telemetry_poller, measurements: periodic_measurements(), period: 10_000}
+      {:telemetry_poller, measurements: periodic_measurements(), period: 10_000},
       # Add reporters as children of your supervision tree.
-      # {Telemetry.Metrics.ConsoleReporter, metrics: metrics()}
+      {TelemetryMetricsPrometheus.Core, metrics: metrics(), port: 9568}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
@@ -21,6 +21,25 @@ defmodule TinyUrlWeb.Telemetry do
 
   def metrics do
     [
+      # URL Shortener Specific Metrics
+      summary("tiny_url.links.create.duration",
+        unit: {:native, :millisecond},
+        description: "Time to create a shortened link"
+      ),
+      summary("tiny_url.links.redirect.duration",
+        unit: {:native, :millisecond},
+        description: "Time to lookup and redirect a link"
+      ),
+      counter("tiny_url.links.create.count",
+        description: "Total number of links created"
+      ),
+      counter("tiny_url.links.redirect.count",
+        description: "Total number of successful redirects"
+      ),
+      counter("tiny_url.links.not_found.count",
+        description: "Total number of 404s for invalid short codes"
+      ),
+
       # Phoenix Metrics
       summary("phoenix.endpoint.start.system_time",
         unit: {:native, :millisecond}
