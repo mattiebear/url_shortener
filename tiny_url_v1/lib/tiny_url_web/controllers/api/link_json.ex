@@ -1,4 +1,4 @@
-defmodule TinyUrlWeb.LinkJSON do
+defmodule TinyUrlWeb.API.LinkJSON do
   @doc """
   Renders a created link as JSON.
   """

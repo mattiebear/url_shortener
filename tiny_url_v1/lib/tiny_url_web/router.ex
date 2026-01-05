@@ -22,10 +22,10 @@ defmodule TinyUrlWeb.Router do
     post "/shorten", LinkController, :create
   end
 
-  scope "/api", TinyUrlWeb do
+  scope "/api", TinyUrlWeb.API do
     pipe_through :api
 
-    post "/links", LinkController, :create_api
+    post "/links", LinkController, :create
   end
 
   # Enable LiveDashboard in development

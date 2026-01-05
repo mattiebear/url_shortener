@@ -37,15 +37,15 @@ defmodule TinyUrl.Links do
 
     case Repo.get_by(Link, short_code: code) do
       nil ->
-        if retry_count > 0 do
-          Logger.info("Short code generated after #{retry_count} collision(s): #{code}")
-        end
-
         code
 
       # Retry on collision
       _link ->
-        Logger.warning("Short code collision detected (attempt #{retry_count + 1}): #{code}")
+        Logger.warning("Short URL collision detected, retrying",
+          short_code: code,
+          attempt: retry_count
+        )
+
         generate_unique_short_code(retry_count + 1)
     end
   end
