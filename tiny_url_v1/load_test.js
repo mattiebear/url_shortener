@@ -12,12 +12,12 @@ const redirectDuration = new Trend("redirect_duration");
 // Test configuration
 export const options = {
   stages: [
-    { duration: "30s", target: 10 }, // Ramp up to 10 users over 30s
-    { duration: "1m", target: 50 }, // Ramp up to 50 users over 1m
-    { duration: "2m", target: 50 }, // Stay at 50 users for 2m
-    { duration: "30s", target: 100 }, // Spike to 100 users over 30s
-    { duration: "1m", target: 100 }, // Stay at 100 users for 1m
-    { duration: "30s", target: 0 }, // Ramp down to 0 users
+    { duration: "2m", target: 100 }, // Warm up
+    { duration: "3m", target: 500 }, // Ramp to 500
+    { duration: "3m", target: 1000 }, // Ramp to 1000
+    { duration: "3m", target: 2000 }, // Ramp to 2000
+    { duration: "3m", target: 5000 }, // Push to 5000
+    { duration: "2m", target: 0 }, // Cool down
   ],
   thresholds: {
     http_req_duration: ["p(95)<500", "p(99)<1000"], // 95% of requests under 500ms, 99% under 1s
