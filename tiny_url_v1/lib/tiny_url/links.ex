@@ -1,4 +1,6 @@
 defmodule TinyUrl.Links do
+  require Logger
+
   alias TinyUrl.Links.Link
   alias TinyUrl.Repo
 
@@ -30,13 +32,21 @@ defmodule TinyUrl.Links do
     end
   end
 
-  defp generate_unique_short_code do
+  defp generate_unique_short_code(retry_count \\ 0) do
     code = :crypto.strong_rand_bytes(4) |> Base.url_encode64(padding: false) |> binary_part(0, 6)
 
     case Repo.get_by(Link, short_code: code) do
-      nil -> code
+      nil ->
+        if retry_count > 0 do
+          Logger.info("Short code generated after #{retry_count} collision(s): #{code}")
+        end
+
+        code
+
       # Retry on collision
-      _link -> generate_unique_short_code()
+      _link ->
+        Logger.warning("Short code collision detected (attempt #{retry_count + 1}): #{code}")
+        generate_unique_short_code(retry_count + 1)
     end
   end
 end
