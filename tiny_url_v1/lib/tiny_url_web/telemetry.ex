@@ -46,10 +46,10 @@ defmodule TinyUrlWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("tiny_url.repo.query.total_time",
-        unit: {:native, :millisecond},
-        description: "The sum of the other measurements"
-      ),
+      # summary("tiny_url.repo.query.total_time",
+      #   unit: {:native, :millisecond},
+      #   description: "The sum of the other measurements"
+      # ),
       summary("tiny_url.repo.query.decode_time",
         unit: {:native, :millisecond},
         description: "The time spent decoding the data received from the database"

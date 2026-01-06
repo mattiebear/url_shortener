@@ -5,12 +5,13 @@
 
 set -e
 
-SCRIPT_FILE="${1:-load_test.js}"
+SCRIPT_FILE="${1:-load_test_baseline.js}"
 
 if [ ! -f "$SCRIPT_FILE" ]; then
     echo "Error: Test script '$SCRIPT_FILE' not found"
     echo "Usage: ./k6_docker.sh [script_file]"
-    echo "Example: ./k6_docker.sh load_test.js"
+    echo "Example: ./k6_docker.sh load_test_baseline.js"
+    echo "         ./k6_docker.sh load_test_heavy.js"
     exit 1
 fi
 
