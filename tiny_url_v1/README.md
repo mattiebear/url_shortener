@@ -65,7 +65,9 @@ A simple and fun URL shortener built with Phoenix Framework. This is version 1 -
 - `mix precommit` - Run pre-commit checks (format, tests, build)
 - `docker compose down` - Stop all services (database, Prometheus, Grafana)
 - `docker compose down -v` - Stop all services and remove data
-- `./k6_docker.sh` - Run k6 load test (no local installation required)
+- `scripts/k6_docker.sh` - Run k6 load test (no local installation required)
+- `scripts/build_prod.sh` - Build production release for load testing
+- `scripts/run_prod.sh` - Run production server
 
 ## Project Structure
 
@@ -140,9 +142,9 @@ Runs a light load profile to gather baseline performance metrics under normal co
 
 **Run the baseline test:**
 ```bash
-./k6_docker.sh                           # Uses Docker (no local install required)
-./k6_podman.sh                           # Alternative: Uses Podman
-./k6_docker.sh load_test_baseline.js     # Explicit file selection
+scripts/k6_docker.sh                           # Uses Docker (no local install required)
+scripts/k6_podman.sh                           # Alternative: Uses Podman
+scripts/k6_docker.sh load_test_baseline.js     # Explicit file selection
 ```
 
 **Baseline test profile:**
@@ -170,8 +172,8 @@ Aggressive load profile that pushes the system to its limits to identify bottlen
 
 **Run the heavy load test:**
 ```bash
-./k6_docker.sh load_test_heavy.js
-./k6_podman.sh load_test_heavy.js
+scripts/k6_docker.sh load_test_heavy.js
+scripts/k6_podman.sh load_test_heavy.js
 ```
 
 **Heavy test profile:**
@@ -208,8 +210,8 @@ brew install k6
 
 Then run directly:
 ```bash
-k6 run load_test_baseline.js
-k6 run load_test_heavy.js
+k6 run scripts/load_test_baseline.js
+k6 run scripts/load_test_heavy.js
 ```
 
 #### Understanding k6 Output
@@ -228,6 +230,25 @@ Watch the Grafana dashboard in real-time to see:
 - Database query performance
 - Error rates
 - System resource usage (memory, CPU)
+
+## Production Build for Load Testing
+
+For accurate load testing results, use a production build instead of the development server. The production build disables code reloading, enables optimizations, and better represents real-world performance.
+
+**Build and run production release:**
+```bash
+scripts/build_prod.sh    # Build the optimized release (first time only)
+scripts/run_prod.sh      # Run the production server
+```
+
+The production build provides:
+- No code reloader overhead
+- Compiled BEAM files for faster execution
+- Minified and optimized static assets
+- Production-level concurrency settings
+- Better performance under heavy load
+
+**Note:** Build once, then use `scripts/run_prod.sh` for subsequent runs. Rebuild only when code changes.
 
 ## About This Version
 

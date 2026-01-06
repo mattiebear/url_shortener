@@ -7,9 +7,8 @@ import Config
 # before starting your production server.
 config :tiny_url, TinyUrlWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
-# Force using SSL in production. This also sets the "strict-security-transport" header,
-# also known as HSTS. `:force_ssl` is required to be set at compile-time.
-config :tiny_url, TinyUrlWeb.Endpoint, force_ssl: [rewrite_on: [:x_forwarded_proto]]
+# Disable SSL for local load testing (enable in real production!)
+# config :tiny_url, TinyUrlWeb.Endpoint, force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Do not print debug messages in production
 config :logger, level: :info
