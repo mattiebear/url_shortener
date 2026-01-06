@@ -22,9 +22,16 @@ The baseline test establishes performance characteristics under light to moderat
   - 80% redirect requests
   - 5% 404 testing (invalid codes)
 
-### Results Summary
+### Grafana Dashboard
 
-![Grafana Dashboard - Baseline Load Test](../tiny_url_v1/grafana_baseline.png)
+![Baseline Load Test - Grafana Metrics](naive_baseline_p95.png)
+
+The dashboard shows three key metrics during the baseline test:
+- **P95 Request Latency** (top left): Steadily decreases from ~18ms to ~14ms as the system warms up
+- **P95 Query Latency** (top right): Database query times drop from ~5ms to ~3ms, showing query optimization
+- **Load Applied** (bottom): Gradual ramp from 0 to 6 req/s over the 8-minute test duration
+
+### Results Summary
 
 #### Thresholds - All Passed ✓
 
@@ -94,4 +101,3 @@ checks_failed......: 0.00% (0 out of 3956)
 ## Heavy Load Test
 
 *Results pending - test to be run next*
-
