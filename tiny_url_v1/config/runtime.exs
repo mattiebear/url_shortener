@@ -36,9 +36,10 @@ if config_env() == :prod do
   config :tiny_url, TinyUrl.Repo,
     # ssl: true,
     url: database_url,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-    # For machines with several cores, consider starting multiple pools of `pool_size`
-    # pool_count: 4,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "100"),
+    # Increase queue target for high load scenarios
+    queue_target: 5000,
+    queue_interval: 5000,
     socket_options: maybe_ipv6
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
