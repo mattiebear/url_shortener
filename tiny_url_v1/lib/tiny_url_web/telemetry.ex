@@ -22,30 +22,17 @@ defmodule TinyUrlWeb.Telemetry do
 
   def metrics do
     [
-      last_value("tiny_url.links.create.duration",
+      # Distribution metrics for load testing
+      distribution("phoenix.endpoint.stop.duration",
         unit: {:native, :millisecond},
-        description: "Time to create a shortened link"
+        reporter_options: [buckets: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000]]
       ),
-      last_value("tiny_url.links.redirect.duration",
+      distribution("tiny_url.repo.query.total_time",
         unit: {:native, :millisecond},
-        description: "Time to lookup and redirect a link"
+        reporter_options: [buckets: [1, 5, 10, 25, 50, 100, 250, 500]]
       ),
-      counter("tiny_url.links.create.count",
-        description: "Total number of links created"
-      ),
-      counter("tiny_url.links.redirect.count",
-        description: "Total number of successful redirects"
-      ),
-      summary("phoenix.endpoint.start.system_time",
-        unit: {:native, :millisecond}
-      ),
-      summary("phoenix.endpoint.stop.duration",
-        unit: {:native, :millisecond}
-      ),
-      summary("phoenix.router_dispatch.start.system_time",
-        tags: [:route],
-        unit: {:native, :millisecond}
-      ),
+
+      # LiveDashboard default metrics
       summary("phoenix.router_dispatch.exception.duration",
         tags: [:route],
         unit: {:native, :millisecond}
@@ -55,14 +42,6 @@ defmodule TinyUrlWeb.Telemetry do
         unit: {:native, :millisecond}
       ),
       summary("phoenix.socket_connected.duration",
-        unit: {:native, :millisecond}
-      ),
-      sum("phoenix.socket_drain.count"),
-      summary("phoenix.channel_joined.duration",
-        unit: {:native, :millisecond}
-      ),
-      summary("phoenix.channel_handled_in.duration",
-        tags: [:event],
         unit: {:native, :millisecond}
       ),
 
