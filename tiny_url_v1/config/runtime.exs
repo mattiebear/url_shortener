@@ -22,9 +22,7 @@ end
 
 config :tiny_url, TinyUrlWeb.Endpoint,
   http: [
-    port: String.to_integer(System.get_env("PORT") || "4000"),
-    # Increase connection pool for better performance under load
-    transport_options: [num_acceptors: 100]
+    port: String.to_integer(System.get_env("PORT") || "4000")
   ]
 
 if config_env() == :prod do
