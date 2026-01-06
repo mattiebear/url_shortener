@@ -2,14 +2,14 @@
 
 ## Project Purpose
 
-This project demonstrates the evolution of a URL shortener service from a naive implementation to a production-ready, scalable system. The goal is to showcase common mistakes made by inexperienced developers and how proper system design principles can address performance, scalability, and reliability concerns.
+This project demonstrates the evolution of a URL shortener service from a straightforward initial implementation to a production-ready, scalable system. The goal is to explore how different architectural decisions impact performance, scalability, and reliability through iterative improvements informed by load testing and observability.
 
 ## Project Structure
 
 The project is organized into multiple versions:
 
-- **tiny_url_v1**: A naive implementation built by an inexperienced developer, showcasing common pitfalls
-- **tiny_url_v2** (planned): An improved version incorporating better system design practices
+- **tiny_url_v1**: A straightforward initial implementation focusing on core functionality
+- **tiny_url_v2** (planned): An improved version incorporating lessons learned from v1's performance testing
 
 ## Load Testing Overview
 
